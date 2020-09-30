@@ -1,0 +1,48 @@
+From the display to the MK controller, UART packs 8 bytes with 9600 8n1 speeds.
+Packages go at 20 Hz.
+The following
+
+data are:3E 04 - start of protocol (identification data for mk controller);
+01 - current transmission (01 / 02 / 03);
+00 - 8 (senior) bit - state of the headlight. 7 bits is set in 1 if the transmission button is held for 5 seconds.
+00 - accelerator level %)(0-100
+; 00 - Recovery braking level (0-100 %);
+00 05 - The control amount is considered as the arithmetic addition of all bytes in the parcel, excluding the title. Example on si: CRC'Byte1'Byte2'... If the MK controller stops receiving packages
+from the display for more than 1
+second, the MK controller is blocked (includes the electric brake) and in packages from the MK byte controller the status is set at 00 (lock).
+
+
+From the MK controller to the display, UART packs 11 bytes with 9600 8n1 speed
+settings.
+Packages go about twice a second.
+The following
+
+data are:3C 07 - start of protocol (identification data for the display);
+01 - MK controller status (00 - lock / 01 - normal operation / 03 - settings accepted);
+00 - service indicators (use 3 junior bits, on bat on each indicator). 0 bit (junior) - "M" indicator. 1 bit - "ECU." 2 bits - "!";
+00 - current consumption (the display can also display negative values, but the MK controller does not transmit the value of the recovery current). Negative tots may not show all displays;
+0B B8 - time between the pulses of the tahodatchik (speed);
+00 00 - unknown;
+00 CB - The control amount is considered to be the arithmetic addition of all bytes in the parcel, excluding the title. Example on si: CRC'Byte1'Byte2'...
+Transfer settings from the display to the MK
+controller.
+
+
+
+2 seconds after the display is turned on, save or cancel service settings, the display controller sends the MK controller a 16-by-byte UART data package with 9600 8n1: 3E 2C - start protocol (identification data for the MK controller);
+
+0B - version of the firmware of the display controller (parameter 0 service menu);
+00 - zero start (parameter 1 service menu);
+3C - speed limit (parameter 2 service menu);
+28 - wheel diameter (parameter 3 service menu);
+1E - number of magnets (parameter 4 service menu);
+32 - power of the first speed (parameter 5 service menu);
+46 - power of the second speed (parameter 6 service menu);
+64 - power third speed (parameter 7 service menu);
+01 - disabling cruise control (parameter 8 service menu);
+00 - Option 9 service menu;
+00 - option 10 service menu;
+00 - 11 service menu option;
+01 96 - The control amount is considered as the arithmetic addition of all bytes in the parcel, excluding the title. Example on si: CRC'Byte1'Byte2'...
+After accepting the settings, the MK controller responds with the value of the byte status of 03 (settings are
+taken).

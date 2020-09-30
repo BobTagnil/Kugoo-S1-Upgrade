@@ -1,0 +1,8 @@
+MCU - simple STM8 (STM8S903K3) - 8K flash drives, 1K RAM, 640 byte eeprom;
+LCD panel with holtek HT1621B controller;
+UART to control the MK controller
+5 buttons
+Accelerator and brake aDC;
+ADC for input meals;
+ADC on output controller MK (power on mk controller goes through shunt 2R2 do not know why);
+SHIM on the illumination display / lantern / squeaker.
